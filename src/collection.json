@@ -2,8 +2,19 @@
   "$schema": "../node_modules/@angular-devkit/schematics/collection-schema.json",
   "schematics": {
     "presenter": {
+      "aliases": ["p"],
       "description": "generate a clean presenter",
       "factory": "./clean/modules/presenter#presenter"
+    },
+    "domain": {
+      "aliases": ["d"],
+      "description": "generate a clean domain",
+      "factory": "./clean/modules/domain#domain"
+    },
+    "all": {
+      "aliases": ["a"],
+      "description": "generate all clean modules",
+      "factory": "./clean/all"
     }
   }
 }

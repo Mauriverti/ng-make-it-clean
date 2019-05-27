@@ -5,8 +5,8 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "test": "npm run build && jasmine src/**/*_spec.js",
-    "clean": "rm -rf presentation",
-    "all": "npm run clean; npm run build; schematics .:presenter --name login --alias prt --pug --debug false"
+    "clean": "rm -rf presentation; rm -rf domain",
+    "all": "npm run clean; npm run build; schematics .:a --name login --alias prt --pug --debug false"
   },
   "keywords": [
     "schematics"

@@ -7,25 +7,28 @@ export function presenter(_options: any): Rule {
     throw new SchematicsException('Name property is missing');
   }
 
-  const className = Helper.toClassName(_options.name);
+  const _className = Helper.toClassName(_options.name);
 
   return chain([
-    componentHTML(_options, className),
-    componentTS(_options, className),
-    defaultPresenter(_options, className),
-    presentationRouting(_options, className),
-    presentationModule(_options, className),
+    componentHTML(_options, _className),
+    componentTS(_options, _className),
+    defaultPresenter(_options, _className),
+    presentationRouting(_options, _className),
+    presentationModule(_options, _className),
   ]);
 }
 
-export function defaultPresenter(_options: any, className: string): Rule {
+export function defaultPresenter(_options: any, _className: string): Rule {
   return (tree: Tree, _context: SchematicContext) => {
     const template =
 `import { Injectable } from '@angular/core';
 
+import { ${_className}Presenter } from '../../domain/boundaries/${_options.name}.presenter';
+import { ${_className}Service } from '../../domain/services/${_options.name}.service';
+
 @Injectable()
-export class Default${className}Presenter implements ${className}Presenter {
-  constructor(private interactor: ${className}Interactor) { }
+export class Default${_className}Presenter implements ${_className}Presenter {
+  constructor(private service: ${_className}Service) { }
 }`;
 
     tree.create(`presentation/presenter/default-${_options.name}.presenter.ts`, template);
@@ -33,59 +36,59 @@ export class Default${className}Presenter implements ${className}Presenter {
   }
 }
 
-export function presentationModule(_options: any, className: string): Rule {
+export function presentationModule(_options: any, _className: string): Rule {
   return (tree: Tree, _context: SchematicContext) => {
     const template =
 `import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { ${className}Routing } from './${_options.name}.routing;
-import { ${className}Component } from './${_options.name}/${_options.name}.component;
-import { ${className}Presenter } from '../domain/boundaries/${_options.name}.presenter';
-import { Default${className}Presenter } from './presenter/default-${_options.name}.presenter';
+import { ${_className}Routing } from './${_options.name}.routing;
+import { ${_className}Component } from './${_options.name}/${_options.name}.component;
+import { ${_className}Presenter } from '../domain/boundaries/${_options.name}.presenter';
+import { Default${_className}Presenter } from './presenter/default-${_options.name}.presenter';
 
 @NgModule({
   imports: [
     CommonModule,
-    ${className}Routing
+    ${_className}Routing
   ],
   exports: [
-    ${className}Component
+    ${_className}Component
   ],
   declarations: [
-    ${className}Component
+    ${_className}Component
   ],
   providers: [
     {
-      provide: ${className}Presenter,
-      useClass: Default${className}Presenter
+      provide: ${_className}Presenter,
+      useClass: Default${_className}Presenter
     }
   ]
 })
-export class ${className}ComponentPresentationModule { }`;
+export class ${_className}ComponentPresentationModule { }`;
 
-    tree.create(`presentation/${_options.name}-presentation.module.ts`, template);
+    tree.create(`presentation/${_options.name}.presentation.module.ts`, template);
     return tree;
   }
 }
 
-export function presentationRouting(_options: any, className: string): Rule {
+export function presentationRouting(_options: any, _className: string): Rule {
   return (tree: Tree, _context: SchematicContext) => {
 
     const template =
 `import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ${className}Component } from './${_options.name}/${_options.name}.Component;
+import { ${_className}Component } from './${_options.name}/${_options.name}.Component;
 
 const _routes: Routes = [
-  { path: '', component: ${className}Component }
+  { path: '', component: ${_className}Component }
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(_routes)],
   exports: [RouterModule]
 })
-export class ${className}Routing { }
+export class ${_className}Routing { }
 `;
 
     tree.create(`presentation/${_options.name}.routing.ts`, template);
@@ -93,7 +96,7 @@ export class ${className}Routing { }
   }
 }
 
-export function componentTS(_options: any, className: string): Rule {
+export function componentTS(_options: any, _className: string): Rule {
   return (tree: Tree, _context: SchematicContext) => {
 
     const template =
@@ -103,7 +106,7 @@ export function componentTS(_options: any, className: string): Rule {
   selector: '${_options.alias ? _options.alias + '-' : '' }${_options.name}',
   templateUrl: './${_options.name}.component.${_options.pug ? 'pug' : 'html'}'
 })
-export class ${className}Component { }
+export class ${_className}Component { }
 `;
 
     tree.create(`presentation/${_options.name}/${_options.name}.component.ts`, template);
@@ -111,14 +114,14 @@ export class ${className}Component { }
   }
 }
 
-export function componentHTML(_options: any, className: string): Rule {
+export function componentHTML(_options: any, _className: string): Rule {
   return (tree: Tree, _context: SchematicContext) => {
 
     if (_options.pug) {
-      const template = `h1 ${className} works!`;
+      const template = `h1 ${_className} works!`;
       tree.create(`presentation/${_options.name}/${_options.name}.component.${_options.pug ? 'pug' : 'html'}`, template);
     } else {
-      const template = `<h1>${className} works!</h1>`;
+      const template = `<h1>${_className} works!</h1>`;
       tree.create(`presentation/${_options.name}/${_options.name}.component.${_options.pug ? 'pug' : 'html'}`, template);
     }
     return tree;
