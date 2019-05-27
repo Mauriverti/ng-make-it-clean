@@ -1,0 +1,25 @@
+{
+  "name": "ng-make-it-clean",
+  "version": "0.0.1",
+  "description": "Schematics to scaffold basic files of clean architecture in angular enviroment",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "npm run build && jasmine src/**/*_spec.js",
+    "clean": "rm -rf presentation",
+    "all": "npm run clean; npm run build; schematics .:presenter --name login --alias prt --pug --debug false"
+  },
+  "keywords": [
+    "schematics"
+  ],
+  "author": "Mauriverti da Silva Junior",
+  "license": "MIT",
+  "schematics": "./src/collection.json",
+  "dependencies": {
+    "@angular-devkit/core": "^7.3.9",
+    "@angular-devkit/schematics": "^7.3.9",
+    "@types/jasmine": "^3.0.0",
+    "@types/node": "^8.0.31",
+    "jasmine": "^3.0.0",
+    "typescript": "~3.2.2"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "$schema": "../node_modules/@angular-devkit/schematics/collection-schema.json",
+  "schematics": {
+    "presenter": {
+      "description": "generate a clean presenter",
+      "factory": "./clean/modules/presenter#presenter"
+    }
+  }
+}
