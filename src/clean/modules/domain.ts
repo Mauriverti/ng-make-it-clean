@@ -24,13 +24,15 @@ export function domainModule(_options: any, _className: string): Rule {
     const template =
 `import { NgModule } from '@angular/core';
 
+/**
+ * @ignore
+ */
 @NgModule({
   providers: [
 
   ]
 })
-export class ${_className}DomainModule { }
-`;
+export class ${_className}DomainModule { }`;
 
     tree.create(`domain/${_options.name}.domain.module.ts`, template);
     return tree;
@@ -70,7 +72,17 @@ export function service(_options: any, _className: string): Rule {
   return (tree: Tree, _context: SchematicContext) => {
 
     const template =
-`export class ${_className}Service {
+`import { Injectable } from '@angular/core';
+
+import { ${_className}Gateway } from '../boundaries/${_options.name}.gateway';
+
+@Injectable()
+export class ${_className}Service {
+
+  /**
+   * @ignore
+   */
+  constructor(private gateway: ${_className}Gateway) { }
 
 }`;
 

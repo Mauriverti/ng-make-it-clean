@@ -1,11 +1,11 @@
 {
   "name": "ng-make-it-clean",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Schematics to scaffold basic files of clean architecture in angular enviroment",
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "test": "npm run build && jasmine src/**/*_spec.js",
-    "clean": "rm -rf presentation; rm -rf domain",
+    "clean": "rm -rf presentation; rm -rf domain; rm -rf data",
     "all": "npm run clean; npm run build; schematics .:a --name login --alias prt --pug --debug false"
   },
   "keywords": [

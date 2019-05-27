@@ -28,7 +28,12 @@ import { ${_className}Service } from '../../domain/services/${_options.name}.ser
 
 @Injectable()
 export class Default${_className}Presenter implements ${_className}Presenter {
+
+  /**
+   * @ignore
+   */
   constructor(private service: ${_className}Service) { }
+
 }`;
 
     tree.create(`presentation/presenter/default-${_options.name}.presenter.ts`, template);
@@ -42,11 +47,14 @@ export function presentationModule(_options: any, _className: string): Rule {
 `import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { ${_className}Routing } from './${_options.name}.routing;
-import { ${_className}Component } from './${_options.name}/${_options.name}.component;
+import { ${_className}Routing } from './${_options.name}.routing';
+import { ${_className}Component } from './${_options.name}/${_options.name}.component';
 import { ${_className}Presenter } from '../domain/boundaries/${_options.name}.presenter';
 import { Default${_className}Presenter } from './presenter/default-${_options.name}.presenter';
 
+/**
+ * @ignore
+ */
 @NgModule({
   imports: [
     CommonModule,
@@ -78,12 +86,15 @@ export function presentationRouting(_options: any, _className: string): Rule {
     const template =
 `import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ${_className}Component } from './${_options.name}/${_options.name}.Component;
+import { ${_className}Component } from './${_options.name}/${_options.name}.component';
 
 const _routes: Routes = [
   { path: '', component: ${_className}Component }
 ];
 
+/**
+ * @ignore
+ */
 @NgModule({
   imports: [RouterModule.forChild(_routes)],
   exports: [RouterModule]
@@ -102,12 +113,19 @@ export function componentTS(_options: any, _className: string): Rule {
     const template =
 `import { Component } from '@angular/core';
 
+import { ${_className}Presenter } from '../../domain/boundaries/${_options.name}.presenter';
+
 @Component({
   selector: '${_options.alias ? _options.alias + '-' : '' }${_options.name}',
   templateUrl: './${_options.name}.component.${_options.pug ? 'pug' : 'html'}'
 })
-export class ${_className}Component { }
-`;
+export class ${_className}Component {
+
+  /**
+   * @ignore
+   */
+  constructor(private presenter: ${_className}Presenter) { }
+}`;
 
     tree.create(`presentation/${_options.name}/${_options.name}.component.ts`, template);
     return tree;

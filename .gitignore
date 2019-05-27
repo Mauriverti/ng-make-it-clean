@@ -4,6 +4,7 @@ src/**/*.js.map
 src/**/*.d.ts
 presentation
 domain
+data
 
 # IDEs
 .idea/

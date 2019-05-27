@@ -3,13 +3,18 @@
   "schematics": {
     "presenter": {
       "aliases": ["p"],
-      "description": "generate a clean presenter",
+      "description": "generate a clean presenter module",
       "factory": "./clean/modules/presenter#presenter"
     },
     "domain": {
       "aliases": ["d"],
-      "description": "generate a clean domain",
+      "description": "generate a clean domain module",
       "factory": "./clean/modules/domain#domain"
+    },
+    "data": {
+      "aliases": ["r"],
+      "description": "generate a clean data module",
+      "factory": "./clean/modules/data#data"
     },
     "all": {
       "aliases": ["a"],
