@@ -1,4 +1,5 @@
 import { Rule, Tree, SchematicContext, chain, SchematicsException } from '@angular-devkit/schematics';
+import { normalize } from '@angular-devkit/core';
 import { Helper } from '../../helpers/helper';
 
 export function presenter(_options: any): Rule {
@@ -8,17 +9,18 @@ export function presenter(_options: any): Rule {
   }
 
   const _className = Helper.toClassName(_options.name);
+  const _baseDir = `./src/app/${_options.name}`;
 
   return chain([
-    componentHTML(_options, _className),
-    componentTS(_options, _className),
-    defaultPresenter(_options, _className),
-    presentationRouting(_options, _className),
-    presentationModule(_options, _className),
+    componentHTML(_options, _className, _baseDir),
+    componentTS(_options, _className, _baseDir),
+    defaultPresenter(_options, _className, _baseDir),
+    presentationRouting(_options, _className, _baseDir),
+    presentationModule(_options, _className, _baseDir),
   ]);
 }
 
-export function defaultPresenter(_options: any, _className: string): Rule {
+export function defaultPresenter(_options: any, _className: string, _baseDir: string): Rule {
   return (tree: Tree, _context: SchematicContext) => {
     const template =
 `import { Injectable } from '@angular/core';
@@ -36,12 +38,12 @@ export class Default${_className}Presenter implements ${_className}Presenter {
 
 }`;
 
-    tree.create(`presentation/presenter/default-${_options.name}.presenter.ts`, template);
+    tree.create(normalize(`${_baseDir}/presentation/presenter/default-${_options.name}.presenter.ts`), template);
     return tree;
   }
 }
 
-export function presentationModule(_options: any, _className: string): Rule {
+export function presentationModule(_options: any, _className: string, _baseDir: string): Rule {
   return (tree: Tree, _context: SchematicContext) => {
     const template =
 `import { NgModule } from '@angular/core';
@@ -75,12 +77,12 @@ import { Default${_className}Presenter } from './presenter/default-${_options.na
 })
 export class ${_className}ComponentPresentationModule { }`;
 
-    tree.create(`presentation/${_options.name}.presentation.module.ts`, template);
+    tree.create(`${_baseDir}/presentation/${_options.name}.presentation.module.ts`, template);
     return tree;
   }
 }
 
-export function presentationRouting(_options: any, _className: string): Rule {
+export function presentationRouting(_options: any, _className: string, _baseDir: string): Rule {
   return (tree: Tree, _context: SchematicContext) => {
 
     const template =
@@ -102,12 +104,12 @@ const _routes: Routes = [
 export class ${_className}Routing { }
 `;
 
-    tree.create(`presentation/${_options.name}.routing.ts`, template);
+    tree.create(`${_baseDir}/presentation/${_options.name}.routing.ts`, template);
     return tree;
   }
 }
 
-export function componentTS(_options: any, _className: string): Rule {
+export function componentTS(_options: any, _className: string, _baseDir: string): Rule {
   return (tree: Tree, _context: SchematicContext) => {
 
     const template =
@@ -127,20 +129,20 @@ export class ${_className}Component {
   constructor(private presenter: ${_className}Presenter) { }
 }`;
 
-    tree.create(`presentation/${_options.name}/${_options.name}.component.ts`, template);
+    tree.create(`${_baseDir}/presentation/${_options.name}/${_options.name}.component.ts`, template);
     return tree;
   }
 }
 
-export function componentHTML(_options: any, _className: string): Rule {
+export function componentHTML(_options: any, _className: string, _baseDir: string): Rule {
   return (tree: Tree, _context: SchematicContext) => {
 
     if (_options.pug) {
       const template = `h1 ${_className} works!`;
-      tree.create(`presentation/${_options.name}/${_options.name}.component.${_options.pug ? 'pug' : 'html'}`, template);
+      tree.create(`${_baseDir}/presentation/${_options.name}/${_options.name}.component.${_options.pug ? 'pug' : 'html'}`, template);
     } else {
       const template = `<h1>${_className} works!</h1>`;
-      tree.create(`presentation/${_options.name}/${_options.name}.component.${_options.pug ? 'pug' : 'html'}`, template);
+      tree.create(`${_baseDir}/presentation/${_options.name}/${_options.name}.component.${_options.pug ? 'pug' : 'html'}`, template);
     }
     return tree;
   }

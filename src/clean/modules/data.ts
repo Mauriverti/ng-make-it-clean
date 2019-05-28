@@ -8,15 +8,16 @@ export function data(_options: any): Rule {
   }
 
   const _className = Helper.toClassName(_options.name);
+  const _baseDir = `./src/app/${_options.name}`;
 
   return chain([
-    defaultGateway(_options, _className),
-    repository(_options, _className),
-    dataModule(_options, _className)
+    defaultGateway(_options, _className, _baseDir),
+    repository(_options, _className, _baseDir),
+    dataModule(_options, _className, _baseDir),
   ]);
 }
 
-export function defaultGateway(_options: any, _className: string): Rule {
+export function defaultGateway(_options: any, _className: string, _baseDir: string): Rule {
   return (tree: Tree, _context: SchematicContext) => {
 
     const template =
@@ -35,12 +36,12 @@ export class Default${_className}Gateway implements ${_className}Gateway {
 
 }`;
 
-    tree.create(`data/default-${_options.name}.gateway.ts`, template);
+    tree.create(`${_baseDir}/data/default-${_options.name}.gateway.ts`, template);
     return tree;
   }
 }
 
-export function repository(_options: any, _className: string): Rule {
+export function repository(_options: any, _className: string, _baseDir: string): Rule {
   return (tree: Tree, _context: SchematicContext) => {
 
     const template =
@@ -51,12 +52,12 @@ export class ${_className}Repository {
 
 }`;
 
-    tree.create(`data/${_options.name}.repository.ts`, template);
+    tree.create(`${_baseDir}/data/${_options.name}.repository.ts`, template);
     return tree;
   }
 }
 
-export function dataModule(_options: any, _className: string): Rule {
+export function dataModule(_options: any, _className: string, _baseDir: string): Rule {
   return (tree: Tree, _context: SchematicContext) => {
 
     const template =
@@ -80,7 +81,7 @@ import { ${_className}Repository } from './${_options.name}.repository';
 })
 export class ${_className}DataModule { }`;
 
-    tree.create(`data/${_options.name}.data.module.ts`, template);
+    tree.create(`${_baseDir}/data/${_options.name}.data.module.ts`, template);
     return tree;
   }
 }
