@@ -1,87 +1,80 @@
-import { Rule, SchematicsException, chain, Tree, SchematicContext } from "@angular-devkit/schematics";
-import { Helper } from "../../helpers/helper";
+import { Rule, chain, Tree, SchematicContext } from "@angular-devkit/schematics";
+import { Config } from "./config";
 
-export function data(_options: any): Rule {
-
-  if (!_options.name) {
-    throw new SchematicsException('Name property is missing');
-  }
-
-  const _className = Helper.toClassName(_options.name);
-  const _baseDir = `./src/app/${_options.name}`;
+export function data(_options: Config): Rule {
 
   return chain([
-    defaultGateway(_options, _className, _baseDir),
-    repository(_options, _className, _baseDir),
-    dataModule(_options, _className, _baseDir),
+    defaultGateway(_options),
+    repository(_options),
+    dataModule(_options),
   ]);
 }
 
-export function defaultGateway(_options: any, _className: string, _baseDir: string): Rule {
+function defaultGateway(_options: Config): Rule {
   return (tree: Tree, _context: SchematicContext) => {
 
     const template =
 `import { Injectable } from '@angular/core';
 
-import { ${_className}Gateway } from '../domain/boundaries/${_options.name}.gateway';
-import { ${_className}Repository } from './${_options.name}.repository';
+import { ${_options.className}Gateway } from '../domain/boundaries/${_options.name}.gateway';
+import { ${_options.className}Repository } from './${_options.name}.repository';
 
 @Injectable()
-export class Default${_className}Gateway implements ${_className}Gateway {
+export class Default${_options.className}Gateway implements ${_options.className}Gateway {
 
   /**
    * @ignore
    */
-  constructor(private repository: ${_className}Repository) { }
+  constructor(private repository: ${_options.className}Repository) { }
 
 }`;
 
-    tree.create(`${_baseDir}/data/default-${_options.name}.gateway.ts`, template);
+    tree.create(`${_options.baseDir}/data/default-${_options.name}.gateway.ts`, template);
     return tree;
   }
 }
 
-export function repository(_options: any, _className: string, _baseDir: string): Rule {
+function repository(_options: Config): Rule {
   return (tree: Tree, _context: SchematicContext) => {
 
     const template =
 `import { Injectable } from '@angular/core';
 
 @Injectable()
-export class ${_className}Repository {
+export class ${_options.className}Repository {
 
 }`;
 
-    tree.create(`${_baseDir}/data/${_options.name}.repository.ts`, template);
+    tree.create(`${_options.baseDir}/data/${_options.name}.repository.ts`, template);
     return tree;
   }
 }
 
-export function dataModule(_options: any, _className: string, _baseDir: string): Rule {
+function dataModule(_options: Config): Rule {
   return (tree: Tree, _context: SchematicContext) => {
 
     const template =
 `import { NgModule } from '@angular/core';
 
-import { Default${_className}Gateway } from './default-${_options.name}.gateway';
-import { ${_className}Gateway } from '../domain/boundaries/${_options.name}.gateway';
-import { ${_className}Repository } from './${_options.name}.repository';
+import { Default${_options.className}Gateway } from './default-${_options.name}.gateway';
+import { ${_options.className}Gateway } from '../domain/boundaries/${_options.name}.gateway';
+import { ${_options.className}Repository } from './${_options.name}.repository';
 
 /**
  * @ignore
  */
 @NgModule({
   providers: [
-    ${_className}Repository,
+    ${_options.className}Repository,
     {
-      provide: ${_className}Gateway,
-      useClass: Default${_className}Gateway
+      provide: ${_options.className}Gateway,
+      useClass: Default${_options.className}Gateway
     }
   ]
 })
-export class ${_className}DataModule { }`;
+export class ${_options.className}DataModule { }`;
 
-    tree.create(`${_baseDir}/data/${_options.name}.data.module.ts`, template);
+    tree.create(`${_options.baseDir}/data/${_options.name}.data.module.ts`, template);
     return tree;
   }
 }

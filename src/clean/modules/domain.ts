@@ -1,24 +1,17 @@
-import { Rule, SchematicsException, chain, SchematicContext, Tree } from '@angular-devkit/schematics';
-import { Helper } from '../../helpers/helper';
+import { Rule, chain, SchematicContext, Tree } from '@angular-devkit/schematics';
+import { Config } from './config';
 
-export function domain(_options: any): Rule {
-
-  if (!_options.name) {
-    throw new SchematicsException('Name property is missing');
-  }
-
-  const _className = Helper.toClassName(_options.name);
-  const _baseDir = `./src/app/${_options.name}`;
+export function domain(_options: Config): Rule {
 
   return chain([
-    domainModule(_options, _className, _baseDir),
-    boundariesPresenter(_options, _className, _baseDir),
-    boundariesGateway(_options, _className, _baseDir),
-    service(_options, _className, _baseDir),
+    domainModule(_options),
+    boundariesPresenter(_options),
+    boundariesGateway(_options),
+    service(_options),
   ]);
 }
 
-export function domainModule(_options: any, _className: string, _baseDir: string): Rule {
+function domainModule(_options: Config): Rule {
 
   return (tree: Tree, _context: SchematicContext) => {
 
@@ -33,61 +26,61 @@ export function domainModule(_options: any, _className: string, _baseDir: string
 
   ]
 })
-export class ${_className}DomainModule { }`;
+export class ${_options.className}DomainModule { }`;
 
-    tree.create(`${_baseDir}/domain/${_options.name}.domain.module.ts`, template);
+    tree.create(`${_options.baseDir}/domain/${_options.name}.domain.module.ts`, template);
     return tree;
   }
 }
 
-export function boundariesPresenter(_options: any, _className: string, _baseDir: string): Rule {
+function boundariesPresenter(_options: Config): Rule {
 
   return (tree: Tree, _context: SchematicContext) => {
 
     const template =
-`export abstract class ${_className}Presenter {
+`export abstract class ${_options.className}Presenter {
 
 }`;
 
-    tree.create(`${_baseDir}/domain/boundaries/${_options.name}.presenter.ts`, template);
+    tree.create(`${_options.baseDir}/domain/boundaries/${_options.name}.presenter.ts`, template);
     return tree;
   }
 }
 
-export function boundariesGateway(_options: any, _className: string, _baseDir: string): Rule {
+function boundariesGateway(_options: Config): Rule {
 
   return (tree: Tree, _context: SchematicContext) => {
 
     const template =
-`export abstract class ${_className}Gateway {
+`export abstract class ${_options.className}Gateway {
 
 }`;
 
-    tree.create(`${_baseDir}/domain/boundaries/${_options.name}.gateway.ts`, template);
+    tree.create(`${_options.baseDir}/domain/boundaries/${_options.name}.gateway.ts`, template);
     return tree;
   }
 }
 
-export function service(_options: any, _className: string, _baseDir: string): Rule {
+function service(_options: Config): Rule {
 
   return (tree: Tree, _context: SchematicContext) => {
 
     const template =
 `import { Injectable } from '@angular/core';
 
-import { ${_className}Gateway } from '../boundaries/${_options.name}.gateway';
+import { ${_options.className}Gateway } from '../boundaries/${_options.name}.gateway';
 
 @Injectable()
-export class ${_className}Service {
+export class ${_options.className}Service {
 
   /**
    * @ignore
    */
-  constructor(private gateway: ${_className}Gateway) { }
+  constructor(private gateway: ${_options.className}Gateway) { }
 
 }`;
 
-    tree.create(`${_baseDir}/domain/services/${_options.name}.service.ts`, template);
+    tree.create(`${_options.baseDir}/domain/services/${_options.name}.service.ts`, template);
     return tree;
   }
 }
