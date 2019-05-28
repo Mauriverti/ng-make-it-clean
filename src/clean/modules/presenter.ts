@@ -111,7 +111,7 @@ function componentTS(_options: Config): Rule {
 import { ${_options.className}Presenter } from '../../domain/boundaries/${_options.name}.presenter';
 
 @Component({
-  selector: '${_options.alias && _options.alias + '-'}${_options.name}',
+  selector: '${_options.alias ? _options.alias + '-' : ''}${_options.name}',
   templateUrl: './${_options.name}.component.${_options.pug ? 'pug' : 'html'}'
 })
 export class ${_options.className}Component {

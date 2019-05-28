@@ -5,6 +5,7 @@ src/**/*.d.ts
 presentation
 domain
 data
+*.tgz
 
 # IDEs
 .idea/

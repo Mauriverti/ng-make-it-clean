@@ -1,6 +1,6 @@
 {
   "name": "ng-make-it-clean",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Schematics to scaffold basic files of clean architecture in angular enviroment",
   "scripts": {
     "build": "tsc -p tsconfig.json",
