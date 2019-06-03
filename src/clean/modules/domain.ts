@@ -1,7 +1,18 @@
-import { Rule, chain, SchematicContext, Tree } from '@angular-devkit/schematics';
+import { Rule, chain, SchematicContext, Tree, SchematicsException } from '@angular-devkit/schematics';
+
+import { Helper } from '../../helpers/helper';
 import { Config } from './config';
 
 export function domain(_options: Config): Rule {
+
+  if (!_options.name) {
+    throw new SchematicsException('Name property is missing');
+  }
+
+  const className = Helper.toClassName(_options.name);
+  const baseDir = `./src/app/${_options.name}`;
+
+  Object.assign(_options, {className, baseDir});
 
   return chain([
     domainModule(_options),
@@ -18,12 +29,14 @@ function domainModule(_options: Config): Rule {
     const template =
 `import { NgModule } from '@angular/core';
 
+import { ${_options.className}Service } from './services/${_options.name}.service';
+
 /**
  * @ignore
  */
 @NgModule({
   providers: [
-
+    ${_options.className}Service
   ]
 })
 export class ${_options.className}DomainModule { }`;

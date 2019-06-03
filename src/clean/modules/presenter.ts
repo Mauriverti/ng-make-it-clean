@@ -1,8 +1,19 @@
-import { Rule, Tree, SchematicContext, chain } from '@angular-devkit/schematics';
+import { Rule, Tree, SchematicContext, chain, SchematicsException } from '@angular-devkit/schematics';
 import { normalize } from '@angular-devkit/core';
+
+import { Helper } from '../../helpers/helper';
 import { Config } from './config';
 
 export function presenter(_options: Config): Rule {
+
+  if (!_options.name) {
+    throw new SchematicsException('Name property is missing');
+  }
+
+  const className = Helper.toClassName(_options.name);
+  const baseDir = `./src/app/${_options.name}`;
+
+  Object.assign(_options, {className, baseDir});
 
   return chain([
     componentHTML(_options),
