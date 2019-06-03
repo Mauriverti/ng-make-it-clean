@@ -62,3 +62,30 @@ src
             |---module-name.module.ts
             '---module-name.repository.ts
 ```
+
+*all
+```
+src
+'---app
+    '---module-name
+        |---data
+        |   |---default-module-name.gateway.ts
+        |   |---module-name.module.ts
+        |   '---module-name.repository.ts
+        |---domain
+        |   |---boundaries
+        |   |   |---module-name.gateway.ts
+        |   |   '---module-name.presenter.ts
+        |   |---services
+        |   |   '---module-name.service.ts
+        |   '---module-name.domain.module.ts
+        |---presentation
+        |   |---module-name
+        |   |   |---module-name.component.html
+        |   |   '---module-name.component.ts
+        |   |---presenter
+        |   |   '---default-module-name.presenter.ts
+        |   |---module-name.presentation.module.ts
+        |   '---module-name.routing.ts
+        '-module-name.module.ts
+```
