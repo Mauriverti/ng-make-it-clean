@@ -10,7 +10,7 @@ Some aditional params:
 * `--alias alias`: Starts the component's selector with this alias;
 * `--pug true/false`: if false, create component's template file using default HTML; creates it using pug otherwise;
 
-#Schematics
+# Schematics
 
 To generate code using this schematics, just type `ng g ng-make-it-clean:SCHEMATIC --params...` where SCHEMATIC is one of the keys below:
 
@@ -19,7 +19,7 @@ To generate code using this schematics, just type `ng g ng-make-it-clean:SCHEMAT
 * to generate just the data submodule, use `data` (shortcut `r`);
 * to genarate all the above submodules use `all` (shortcut: `a`).
 
-#Generated code
+# Generated code
 
 This files are created into `/src/app/` folder.
 
