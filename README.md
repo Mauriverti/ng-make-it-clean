@@ -63,7 +63,7 @@ src
             '---module-name.repository.ts
 ```
 
-*all
+* all
 ```
 src
 '---app
