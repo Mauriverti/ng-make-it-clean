@@ -87,5 +87,5 @@ src
         |   |   '---default-module-name.presenter.ts
         |   |---module-name.presentation.module.ts
         |   '---module-name.routing.ts
-        '-module-name.module.ts
+        '---module-name.module.ts
 ```
